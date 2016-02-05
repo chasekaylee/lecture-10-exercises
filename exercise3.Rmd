@@ -7,25 +7,34 @@ output: html_document
 ```{r, echo=FALSE}
 library(jsonlite)
 # Create a variable of your API key
-
+api_key <- "546E5DUZ2R228YPVP"
 
 # Store the name of your band in a variable
-
+band <- "Alabama Shakes"
 
 # Creat another variable that replaces your spaces with +'s (hint: gsub)
-
+band_no_spaces <- gsub(" ", "+", band)
 
 # Write a query to get the first biography of your band on echonest
 # See: http://developer.echonest.com/docs/v4/artist.html#biographies
+biography_base <- 'http://developer.echonest.com/api/v4/artist/biographies?api_key='
+biography_url <- paste0(biography_base, api_key, '&name=', band_no_spaces, '&results=1')
+bio <- fromJSON(biography_url)
+bio_text <- bio$response$biographies$text
+
 
 # Use the fromJSON command to retrieve your data, and store the text of the first biography in a variable
-
+results_bio <- fromJSON(biography_url)
 
 # Run another query to get band images: see: http://developer.echonest.com/docs/v4/artist.html#images
 ### Warning: you may get an error message if the image is not available -- check online that it exists!
+image_base <- 'http://developer.echonest.com/api/v4/artist/images?api_key='
+image_url <- paste0(image_base, api_key, '&name=', band_no_spaces, '&results=1')
+image_results <- fromJSON(image_url)
+image_to_include <- image_results$response$images$url
 
 # Use the fromJSON command to retrieve your data, and store the url of the first image in a variable
-
+results_image <- fromJSON(image_url)
 
 # Outside of this code section, write the (R)Markdown syntax that:
 # - States the name of your band
@@ -36,3 +45,7 @@ library(jsonlite)
 # Make another request, and retrieve/display the band's top songs
 # Wrap the above steps in a function that takes a band as a parameter, and returns the desired info
 ```
+
+
+
+
